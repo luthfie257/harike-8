@@ -10,25 +10,46 @@
 // server.listen(port,() => {
 // console.log(`Server running at ${port}...`);
 // });
-
+const expressLayout = require('express-ejs-layouts');
 const express = require('express');
 const app = express();
 const port = 3000;
 
+app.set('view engine', 'ejs');
+app.use(expressLayout);
+app.set('layout', 'layout/main-layout');
 app.get('/', (req, res) => {
-    res.sendFile('./index.html', {root:__dirname});
+    const mahasiswa = [
+        {
+            nama: 'Rizky',
+            email: 'qwe@gmail.comm'
+        },
+        {
+            nama: 'Asep',
+            email: 'asep@gmail.com',
+        },
+        {
+            nama: 'Budi',
+            email: 'budi@gmail.com',
+        }
+    ];
+    res.render('index', {
+        title : 'Halaman Home',
+        mahasiswa : mahasiswa,
+    });
 });
 
+
 app.get('/about', (req, res) => {
-    res.sendFile('./about.html', {root:__dirname});
+    res.render('about', {title : 'Halaman About'});
 });
 
 app.get('/contact', (req, res) => {
-    res.sendFile('./contact.html', {root:__dirname});
+    res.render('contact', {title : 'Halaman Contact'});
 });
 
 app.get('/product/:id', (req, res) => {
-    res.send(`Product ID: ${req.params.id} <br> Category ID: ${req.query.idCat}`);
+res.send(`Product ID: ${req.params.id} <br> Category ID: ${req.params.idCat}`);
 });
 
 app.use('/', (req, res) => {
@@ -38,4 +59,4 @@ app.use('/', (req, res) => {
 
 app.listen(port,() => {
     console.log(`Exaple app listening port ${port}`);
-});
+})
